@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/Employee';
 import { EmployeeService } from 'src/app/Employee.service'
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';;
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,11 +33,23 @@ export class DashboardComponent implements OnInit {
   }
 
   hapus(id: string) {
-    // tambahkan confirmation alert modal
+    Swal.fire({
+      title: 'Yakin hapus data?',
+      text: "Data yang sudah terhapus tidak dapat dikembalikan lagi.",
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Batal Hapus',
+      confirmButtonColor: '#0d6efd',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus data!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.EmployeeService.delete(id).subscribe(() => {
+    })
     window.location.reload()
-    this.EmployeeService.delete(id).subscribe(() => {
-    });
   }
+  })
+}
 
 
   addModalForm() {
@@ -71,9 +84,17 @@ export class DashboardComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.EmployeeService.update(id, this.form.value).subscribe(() => {
-        window.location.reload()
-        alert("Data berhasil diubah");
       });
+      Swal.fire({
+        title: 'Berhasil',
+        text: 'Data berhasil di update!',
+        icon: 'success',
+        confirmButtonColor: '#0d6efd'
+      }).then((result) => {
+        if(result.isConfirmed){
+          window.location.reload()
+        }
+      })
     }
   }
 }
