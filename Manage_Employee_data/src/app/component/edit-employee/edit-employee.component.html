@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Update Employee</h5>
+    <button type="button" class="btn-close" aria-label="Close"
+        (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="form"  id="form">
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">First Name:</label>
+            <input formControlName="firstname" type="text" class="form-control" required>
+            <div *ngIf="form.controls['firstname'].touched && form.controls['firstname'].invalid" class="text-danger text-sm-start">
+                <small *ngIf="form.controls['firstname'].errors && form.controls['firstname'].errors['required']">First Name is required.</small>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Last Name:</label>
+            <input formControlName="lastname" type="text" class="form-control" required>
+            <div *ngIf="form.controls['lastname'].touched && form.controls['lastname'].invalid" class="text-danger text-sm-start">
+                <small *ngIf="form.controls['lastname'].errors && form.controls['lastname'].errors['required']">Last Name is required.</small>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Email:</label>
+            <input formControlName="email" type="text" class="form-control" required>
+            <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="text-danger text-sm-start">
+                <small *ngIf="form.controls['email'].errors && form.controls['email'].errors['required']">Email is required.</small>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Address:</label>
+            <input formControlName="address" type="text" class="form-control" required>
+            <div *ngIf="form.controls['address'].touched && form.controls['address'].invalid" class="text-danger text-sm-start">
+                <small *ngIf="form.controls['address'].errors && form.controls['address'].errors['required']">Address is required.</small>
+            </div>
+        </div><div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Phone:</label>
+            <input formControlName="phone" type="text" class="form-control" required>
+            <div *ngIf="form.controls['phone'].touched && form.controls['phone'].invalid" class="text-danger text-sm-start">
+                <small *ngIf="form.controls['phone'].errors && form.controls['phone'].errors['required']">Phone is required.</small>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" (click)="update()" form="form" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+</div>
