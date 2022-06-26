@@ -15,7 +15,10 @@ export class DashboardComponent implements OnInit {
   idemployee: string="";
 
   form: FormGroup;
+
   constructor(private EmployeeService: EmployeeService, private fb: FormBuilder,private router: Router) { 
+    
+
     this.form = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -32,7 +35,8 @@ export class DashboardComponent implements OnInit {
     }) 
   }
 
-  hapus(id: string) {
+  hapus(employee : any) {
+    console.log(employee)
     Swal.fire({
       title: 'Yakin hapus data?',
       text: "Data yang sudah terhapus tidak dapat dikembalikan lagi.",
@@ -44,9 +48,10 @@ export class DashboardComponent implements OnInit {
       confirmButtonText: 'Ya, Hapus data!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.EmployeeService.delete(id).subscribe(() => {
+        this.EmployeeService.delete(employee).subscribe(() => {
     })
-    window.location.reload()
+    const idx = this.employees.findIndex(q => q._id === employee);
+    this.employees.splice(idx, 1);
   }
   })
 }
@@ -64,7 +69,16 @@ export class DashboardComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.EmployeeService.create(this.form.value).subscribe(() => {
-        window.location.reload()
+        Swal.fire({
+          title: 'Berhasil',
+          text: 'Data berhasil di submit!',
+          icon: 'success',
+          confirmButtonColor: '#0d6efd'
+        }).then((result) => {
+          if(result.isConfirmed){
+            window.location.reload()
+          }
+        })
       });
     }
   }
@@ -81,6 +95,7 @@ export class DashboardComponent implements OnInit {
 
   update() {
     const id = this.idemployee;
+    console.log(id)
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.EmployeeService.update(id, this.form.value).subscribe(() => {
@@ -92,7 +107,8 @@ export class DashboardComponent implements OnInit {
         confirmButtonColor: '#0d6efd'
       }).then((result) => {
         if(result.isConfirmed){
-          window.location.reload()
+          const idx = this.employees.findIndex(q => q._id === id);
+          this.employees[idx] = {...this.employees[idx], ...this.form.value};
         }
       })
     }
